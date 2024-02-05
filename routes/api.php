@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\LombaController;
 
 
 /*
@@ -49,3 +50,9 @@ Route::group(['middleware' => 'auth:api'],function(){
 
 });
 
+
+Route::post('/lomba/create', [LombaController::class, 'create'])->name('lomba.create');
+Route::get('/lomba/show',[LombaController::class, 'show'])->name('lomba.show');
+Route::get('/lomba/{id}', [LombaController::class, 'showId'])->name('lomba.showId');
+Route::put('/lomba/update/{id}', [LombaController::class, 'update']);
+Route::delete('/lomba/destroy/{id}', [LombaController::class, 'destroy']);

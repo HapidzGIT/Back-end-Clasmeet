@@ -20,14 +20,6 @@ Route::get('/', function () {
 });
 
 
-Route::post('/login', [LoginController::class, '__invoke']);
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/admin/page', 'AdminController@index')->name('admin.page');
-});
-
-
-Route::middleware(['auth', 'role:user'])->group(function () {
-    Route::prefix('user')->group(function () {
-        Route::get('/page', 'UserController@index')->name('user.page');
-    });
-});
+Route::get('admin',function(){
+return "<h1>admin</h1>";
+})->middleware(['auth','verified','role|admin']);
