@@ -24,7 +24,7 @@ class LombaController extends Controller
 
     public function show()
     {
-        $lomba = Lomba::all();
+        $lomba = Lomba::paginate(5); 
         return response()->json($lomba);
     }
 
