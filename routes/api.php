@@ -60,6 +60,6 @@ Route::delete('/lomba/destroy/{id}', [LombaController::class, 'destroy']);
 //route jadwal
 Route::post('/jadwal/create', [JadwalController::class, 'create'])->name('lomba.create');
 Route::get('/jadwal/show',[JadwalController::class, 'show'])->name('lomba.show');
-Route::get('/jadwal/{id}', [LombaController::class, 'showId'])->name('lomba.showId');
-Route::put('/jadwal/update/{id}', [LombaController::class, 'update']);
-Route::delete('/jadwal/destroy/{id}', [LombaController::class, 'destroy']);
+Route::get('/jadwal/{id}', [JadwalController::class, 'showId'])->name('lomba.showId');
+Route::put('/jadwal/update/{id}', [JadwalController::class, 'update']);
+Route::delete('/jadwal/destroy/{id}', [JadwalController::class, 'destroy']);
