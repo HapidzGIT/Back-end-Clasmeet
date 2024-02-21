@@ -18,7 +18,7 @@ class LogoutController extends Controller
 
                 return response()->json([
                     'success' => true,
-                    'message' => 'Logout Berhasil! jir',
+                    'message' => 'Logout Berhasil! ',
                 ]);
             } catch (\Exception $e) {
                 return response()->json([

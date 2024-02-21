@@ -38,7 +38,7 @@ class JadwalController extends Controller
     {
     $jadwal = Jadwal::findOrFail($id);
         $jadwal->nama_lomba = $request->input('nama_lomba');
-        $jadwal->tangga = $request->input('tanggal');
+        $jadwal->tanggal = $request->input('tanggal');
         $jadwal->kelas = $request->input('kelas');
         $jadwal->tempat = $request->input('tempat');
         $jadwal->keterangan = $request->input('keterangan');
