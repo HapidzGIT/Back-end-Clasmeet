@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama_lomba', 255);
             $table->string('tanggal', 255);
+            $table->dateTime('waktu'); 
             $table->string('kelas');
             $table->string('tempat', 255);
             $table->string('keterangan', 255);

@@ -28,7 +28,5 @@ class RoleSeeder extends Seeder
       
         Permission::create(['name' => 'roles.index']);
         Permission::create(['name' => 'roles.create']);
-        
-        
     }
 }

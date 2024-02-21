@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\LombaController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\BuatLombaController;
+use App\Http\Controllers\ChatController;
 
 
 
@@ -79,3 +80,6 @@ Route::group(['middleware' => 'auth:api'],function(){
     Route::get('/users', [UserController::class, 'index']);
     Route::get('/users/{id}', [UserController::class, 'showId']);
     Route::delete('/users/destroy/{id}', [UserController::class, 'destroy']);
+
+  // Route untuk menyimpan chat baru
+Route::post('/chats', [ChatController::class, 'store']);

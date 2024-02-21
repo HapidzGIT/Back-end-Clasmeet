@@ -11,8 +11,12 @@ class jadwal extends Model
     protected $fillable = [
         'nama_lomba',
         'tanggal',
+        'waktu',
         'kelas',
         'tempat',
         'keterangan',
+    ];
+    protected $cast = [
+        'waktu'=> 'datetime',
     ];
 }
