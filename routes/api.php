@@ -46,10 +46,12 @@ Route::middleware('auth:api')->get('/user', function(Request $request){
  * @method "POST"
  */
 
+
 Route::group(['middleware' => 'auth:api'],function(){
     Route::post('/logout', \App\Http\Controllers\Api\LogoutController::class)->name('logout');
 
 });
+
 
 //route lomba
 Route::post('/lomba/create', [LombaController::class, 'create'])->name('lomba.create');
