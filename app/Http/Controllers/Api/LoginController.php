@@ -59,36 +59,36 @@ class LoginController extends Controller
     protected function authenticated(Request $request, $user, $token)
     {
         // Lakukan otentikasi pengguna
-            auth()->login($user);
-        
-            $response = [
-                'success' => true,
-                'data' => [
-                    'user' => [
-                        'id' => auth()->user()->id,
-                        'name' => auth()->user()->name,
-                        'email' => auth()->user()->email
-                    ],
-                    'token' => $token,
+        auth()->login($user);
+
+        $response = [
+            'success' => true,
+            'data' => [
+                'user' => [
+                    'id' => auth()->user()->id,
+                    'name' => auth()->user()->name,
+                    'email' => auth()->user()->email
                 ],
-            ];
-        
-            // Periksa dan tambahkan roles ke array jika pengguna memiliki peran tertentu
-            if ($user->hasRole('admin')) {
-                $response['roles'][] = 'admin';
-                // Sinkronkan izin untuk pengguna
-                $user->syncPermissions(['users.index', 'users.create','users.edit','users.delete']);
-                $response['permissions']['users.index'] = $user->hasPermissionTo('users.index');
-                $response['permissions']['users.create'] = $user->hasPermissionTo('users.create');
-                $response['permissions']['users.edit'] = $user->hasPermissionTo('users.edit');
-                $response['permissions']['users.delete'] = $user->hasPermissionTo('users.delete');
-            }
-        
-            if ($user->hasRole('user')) {
-                // Jika pengguna adalah user, tambahkan role user ke dalam respons
-                $response['roles'][] = 'user';
-            }
-        
-            return response()->json($response, 200);
+                'token' => $token,
+            ],
+        ];
+
+        // Periksa dan tambahkan roles ke array jika pengguna memiliki peran tertentu
+        if ($user->hasRole('admin')) {
+            $response['roles'][] = 'admin';
+            // Sinkronkan izin untuk pengguna
+            $user->syncPermissions(['users.index', 'users.create', 'users.edit', 'users.delete']);
+            // $response['permissions']['users.index'] = $user->hasPermissionTo('users.index');
+            // $response['permissions']['users.create'] = $user->hasPermissionTo('users.create');
+            // $response['permissions']['users.edit'] = $user->hasPermissionTo('users.edit');
+            // $response['permissions']['users.delete'] = $user->hasPermissionTo('users.delete');
         }
+
+        if ($user->hasRole('user')) {
+            // Jika pengguna adalah user, tambahkan role user ke dalam respons
+            $response['roles'][] = 'user';
+        }
+
+        return response()->json($response, 200);
     }
+}

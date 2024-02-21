@@ -10,7 +10,7 @@ class BuatLombaController extends Controller
     public function imageUpload(Request $req)
     {
         $buatLomba = new buat_lomba;
-    
+
         if ($req->hasFile('image')) {
             $filename = $req->file('image')->getClientOriginalName();
             $getfilenamewitoutext = pathinfo($filename, PATHINFO_FILENAME);
@@ -19,21 +19,21 @@ class BuatLombaController extends Controller
             $img_path = $req->file('image')->storeAs('public/post_img', $createnewFileName);
             $buatLomba->image = $createnewFileName;
         }
-    
+
         $buatLomba->nama_pj = $req->nama_pj; //Menyimpan Nilai dari Nama_pj
         $buatLomba->kontak = $req->kontak; //Menyimpan Nilai dari Kontak
         $buatLomba->nama_lomba = $req->nama_lomba; // Menyimpan nilai nama_lomba dari request
-    
+
         if ($buatLomba->save()) {
             return ['status' => true, 'message' => "Image uploaded successfully"];
         } else {
             return ['status' => false, 'message' => "Error: Image not uploaded successfully"];
         }
     }
-    
+
     public function show()
     {
-        $buatLomba = buat_lomba::paginate(4); // Menggunakan paginate untuk membagi data ke dalam beberapa halaman
+        $buatLomba = buat_lomba::paginate(5); // Menggunakan paginate untuk membagi data ke dalam beberapa halaman
 
         return response()->json($buatLomba);
     }
