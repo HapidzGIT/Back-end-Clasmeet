@@ -7,26 +7,28 @@ use App\Models\Chat;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Database\QueryException;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Auth;
 
 class ChatController extends Controller
 {
     public function store(Request $request): JsonResponse
     {
         try {
+            // Mengambil user yang sedang login
+            $user = Auth::user();
+            
+            // Validasi tidak lagi memerlukan 'user_id'
             $request->validate([
-                'user_id' => 'required|exists:users,id',
                 'message' => 'required|string',
-            ], [
-                'user_id.exists' => 'User ID yang dipilih tidak valid.',
             ]);
 
             $chat = Chat::create([
-                'user_id' => $request->user_id,
+                'user_id' => $user->id, // Menggunakan ID pengguna yang sedang login
                 'message' => $request->message,
             ]);
 
-            // Ambil nama pengguna
-            $userName = $chat->user->name;
+            // Ambil nama pengguna dari pengguna yang sedang login
+            $userName = $user->name;
 
             return response()->json(['message' => 'Chat berhasil disimpan', 'user_name' => $userName], 201);
         } catch (ValidationException $e) {
@@ -37,4 +39,30 @@ class ChatController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
+    public function destroy($id)
+    {
+        try {
+            $chat = Chat::findOrFail($id);
+            $chat->delete();
+            
+            return response()->json(['message' => 'Chat berhasil dihapus'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Gagal menghapus chat'], 500);
+        }
+    }
+
+    public function getMessage()
+    {
+    try {
+        $chats = Chat::all();
+        
+        $messages = $chats->pluck('message');
+
+        return response()->json(['messages' => $messages], 200);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Gagal mengambil pesan chat'], 500);
+    }
+    }
+
 }

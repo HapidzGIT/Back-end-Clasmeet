@@ -63,6 +63,7 @@ Route::group(['middleware' => 'auth:api'],function(){
     Route::get('/lomba/{id}', [LombaController::class, 'showId'])->name('lomba.showId');
     Route::put('/lomba/update/{id}', [LombaController::class, 'update']);
     Route::delete('/lomba/destroy/{id}', [LombaController::class, 'destroy']);
+    Route::get('/lomba/{nama_lomba}', [LombaController::class, 'showByNamaLomba']);
 
     // Route untuk jadwal
     Route::post('/jadwal/create', [JadwalController::class, 'create'])->name('lomba.create');
@@ -82,4 +83,6 @@ Route::group(['middleware' => 'auth:api'],function(){
     Route::delete('/users/destroy/{id}', [UserController::class, 'destroy']);
 
   // Route untuk menyimpan chat baru
-Route::post('/chats', [ChatController::class, 'store']);
+    Route::post('/chats', [ChatController::class, 'store']);
+    Route::get('/chats/message', [ChatController::class, 'getMessage']);
+    Route::delete('/chats/{id}', [ChatController::class, 'destroy']);

@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('buat_lomba', function (Blueprint $table) {
             $table->id();
             $table->string("nama_lomba", 255)->default('');
-           $table->string("image",255);
-           $table->string("nama_pj",255);
-           $table->integer("kontak");
+            $table->string("image",255)->nullable(); // Mengubah menjadi nullable agar bisa null atau memberikan nilai default jika diperlukan
+            $table->string("nama_pj",255);
+            $table->integer("kontak");
             $table->timestamps();
         });
     }
