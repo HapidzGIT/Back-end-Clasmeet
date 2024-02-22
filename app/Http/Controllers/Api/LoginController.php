@@ -77,11 +77,10 @@ class LoginController extends Controller
         if ($user->hasRole('admin')) {
             $response['roles'][] = 'admin';
             // Sinkronkan izin untuk pengguna
-            $user->syncPermissions(['users.index', 'users.create', 'users.edit', 'users.delete']);
-            // $response['permissions']['users.index'] = $user->hasPermissionTo('users.index');
-            // $response['permissions']['users.create'] = $user->hasPermissionTo('users.create');
-            // $response['permissions']['users.edit'] = $user->hasPermissionTo('users.edit');
-            // $response['permissions']['users.delete'] = $user->hasPermissionTo('users.delete');
+            $user->syncPermissions(['users.index', 'users.create', 'users.edit',]);
+            $response['permissions']['users.index'] = $user->hasPermissionTo('users.index');
+            $response['permissions']['users.create'] = $user->hasPermissionTo('users.create');
+            $response['permissions']['users.edit'] = $user->hasPermissionTo('users.edit');
         }
 
         if ($user->hasRole('user')) {

@@ -38,6 +38,7 @@ class RegisterController extends Controller
 
         //respon balik pengguna json terbuat
         if($user){
+            $user->assignRole('user');
             return response()->json([
              'success' => true,
              'user' => $user,
