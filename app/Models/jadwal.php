@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class jadwal extends Model
+class Jadwal extends Model
 {
     protected $table = 'jadwal_lomba';
     protected $fillable = [
@@ -15,8 +15,5 @@ class jadwal extends Model
         'kelas',
         'tempat',
         'keterangan',
-    ];
-    protected $cast = [
-        'waktu'=> 'datetime',
     ];
 }

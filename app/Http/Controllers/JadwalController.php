@@ -15,6 +15,7 @@ class JadwalController extends Controller
         $jadwal->kelas = $request->input('kelas');
         $jadwal->waktu = $request->input('waktu');
         $jadwal->tempat = $request->input('tempat');
+        $jadwal->waktu = $request->input('waktu'); // Isi nilai 'waktu'
         $jadwal->keterangan = $request->input('keterangan');
       
     
