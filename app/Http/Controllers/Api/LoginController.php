@@ -9,32 +9,23 @@ use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
-    /**
-     * Handle the incoming request.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
     public function __invoke(Request $request)
     {
-        // Set validation
         $validator = Validator::make($request->all(), [
-            'email' => 'required',
+            'email' => 'required|email',
             'password' => 'required',
         ]);
 
-        // Jika validasi gagal
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
                 'message' => 'Validasi gagal',
+                'errors' => $validator->errors()
             ], 422);
         }
 
-        // Dapatkan credentials dari request
         $credentials = $request->only('email', 'password');
 
-        // Jika auth gagal
         if (!$token = JWTAuth::attempt($credentials)) {
             return response()->json([
                 'success' => false,
@@ -44,18 +35,9 @@ class LoginController extends Controller
 
         $user = auth()->user();
 
-        // Redirect berdasarkan peran setelah autentikasi berhasil
         return $this->authenticated($request, $user, $token);
     }
 
-    /**
-     * Handle the authenticated user.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param mixed $user
-     * @param string $token
-     * @return \Illuminate\Http\Response
-     */
     protected function authenticated(Request $request, $user, $token)
     {
         // Lakukan otentikasi pengguna
@@ -77,7 +59,7 @@ class LoginController extends Controller
         if ($user->hasRole('admin')) {
             $response['roles'][] = 'admin';
             // Sinkronkan izin untuk pengguna
-            $user->syncPermissions(['users.index', 'users.create', 'users.edit',]);
+            $user->syncPermissions(['users.index', 'users.create', 'users.edit']);
             $response['permissions']['users.index'] = $user->hasPermissionTo('users.index');
             $response['permissions']['users.create'] = $user->hasPermissionTo('users.create');
             $response['permissions']['users.edit'] = $user->hasPermissionTo('users.edit');

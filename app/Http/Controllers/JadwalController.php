@@ -10,10 +10,10 @@ class JadwalController extends Controller
     public function create(Request $request)
     {
         $jadwal = new Jadwal();
-    
         $jadwal->nama_lomba = $request->input('nama_lomba');
         $jadwal->tanggal = $request->input('tanggal');
         $jadwal->kelas = $request->input('kelas');
+        $jadwal->waktu = $request->input('waktu');
         $jadwal->tempat = $request->input('tempat');
         $jadwal->keterangan = $request->input('keterangan');
       
@@ -37,11 +37,13 @@ class JadwalController extends Controller
     public function update(Request $request, $id)
     {
     $jadwal = Jadwal::findOrFail($id);
-        $jadwal->nama_lomba = $request->input('nama_lomba');
-        $jadwal->tanggal = $request->input('tanggal');
-        $jadwal->kelas = $request->input('kelas');
-        $jadwal->tempat = $request->input('tempat');
-        $jadwal->keterangan = $request->input('keterangan');
+    $jadwal->nama_lomba = $request->input('nama_lomba');
+    $jadwal->tanggal = $request->input('tanggal');
+    $jadwal->kelas = $request->input('kelas');
+    $jadwal->waktu = $request->input('waktu');
+    $jadwal->tempat = $request->input('tempat');
+    $jadwal->keterangan = $request->input('keterangan');
+  
 
     $jadwal->save();
     return response()->json($jadwal);
