@@ -12,33 +12,37 @@ use Illuminate\Support\Facades\Auth;
 class ChatController extends Controller
 {
     public function store(Request $request): JsonResponse
-    {
-        try {
-            // Mengambil user yang sedang login
-            $user = Auth::user();
-            
-            // Validasi tidak lagi memerlukan 'user_id'
-            $request->validate([
-                'message' => 'required|string',
-            ]);
-
-            $chat = Chat::create([
-                'user_id' => $user->id, // Menggunakan ID pengguna yang sedang login
-                'message' => $request->message,
-            ]);
-
-            // Ambil nama pengguna dari pengguna yang sedang login
-            $userName = $user->name;
-
-            return response()->json(['message' => 'Chat berhasil disimpan', 'user_name' => $userName], 201);
-        } catch (ValidationException $e) {
-            return response()->json(['error' => $e->validator->errors()->first()], 422);
-        } catch (QueryException $e) {
-            return response()->json(['error' => 'Gagal menyimpan chat'], 500);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+{
+    try {
+        // Mengambil user yang sedang login
+        $user = Auth::user();
+        
+        if (!$user) {
+            return response()->json(['error' => 'User tidak terautentikasi'], 401);
         }
+        
+        // Validasi tidak lagi memerlukan 'user_id'
+        $request->validate([
+            'message' => 'required|string',
+        ]);
+
+        $chat = Chat::create([
+            'user_id' => $user->id, // Menggunakan ID pengguna yang sedang login
+            'message' => $request->message,
+        ]);
+
+        // Ambil nama pengguna dari pengguna yang sedang login
+        $userName = $user->name;
+
+        return response()->json(['message' => 'Chat berhasil disimpan', 'user_name' => $userName], 201);
+    } catch (ValidationException $e) {
+        return response()->json(['error' => $e->validator->errors()->first()], 422);
+    } catch (QueryException $e) {
+        return response()->json(['error' => 'Gagal menyimpan chat'], 500);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
     }
+}
 
     public function destroy($id)
     {
@@ -54,7 +58,7 @@ class ChatController extends Controller
 
     public function getMessage()
     {
-    try {
+    try {   
         $chats = Chat::all();
         
         $messages = $chats->pluck('message');

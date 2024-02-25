@@ -16,7 +16,7 @@ class LombaController extends Controller
     
         // Mendapatkan ID lomba yang baru saja dibuat
         $buatLombaId = $request->input('buat_lomba_id');
-    
+        
         $lomba->nama_kelas = $request->input('nama_kelas');
         $lomba->jumlah_pemain = $request->input('jumlah_pemain');
         $lomba->nama_peserta = $request->input('nama_peserta');
