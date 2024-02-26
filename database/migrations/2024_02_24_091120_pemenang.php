@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('jadwal_lomba', function (Blueprint $table) {
+        Schema::create('pemenang_lomba', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_lomba', 255);
-            $table->string('tanggal', 255);
-            $table->Time('waktu'); 
-            $table->string('kelas');
-            $table->string('tempat', 255);
-            $table->string('keterangan', 255);
+            $table->string("nama_lomba", 255)->default('');
+            $table->string("image",255)->nullable(); // Mengubah menjadi nullable agar bisa null atau memberikan nilai default jika diperlukan
+            $table->string("keterangan",255);
+            $table->string("nama_kelas");
             $table->timestamps();
         });
     }
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('jadwal_lomba');
+        //
     }
 };

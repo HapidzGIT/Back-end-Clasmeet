@@ -8,8 +8,9 @@ use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\BuatLombaController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\EmailController;
+use App\Http\Controllers\PemenangLomba;
 
-Route::post('/send-email', [EmailController::class, 'sendEmail']);
+
 
 
 
@@ -24,6 +25,7 @@ Route::post('/send-email', [EmailController::class, 'sendEmail']);
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -68,27 +70,27 @@ Route::put('/lomba/update/{id}', [LombaController::class, 'update']);
 Route::delete('/lomba/destroy/{id}', [LombaController::class, 'destroy']);
 Route::get('/lomba/{nama_lomba}', [LombaController::class, 'showByNamaLomba']);
 
-// Route untuk jadwal
+// Route untuk jadwal90%
 Route::post('/jadwal/create', [JadwalController::class, 'create'])->name('lomba.create');
 Route::get('/jadwal/show', [JadwalController::class, 'show'])->name('lomba.show');
 Route::get('/jadwal/{id}', [JadwalController::class, 'showId'])->name('lomba.showId');
 Route::put('/jadwal/update/{id}', [JadwalController::class, 'update']);
 Route::delete('/jadwal/destroy/{id}', [JadwalController::class, 'destroy']);
 
-// Route untuk buat lomba
+// Route untuk buat lomba (80%)
 Route::post('/buat-lomba', [BuatLombaController::class, 'imageUpload']);
 Route::get('/buat-lomba/show', [BuatLombaController::class, 'show'])->name('buatlomba.show');
 Route::get('/buat-lomba/{id}', [BuatLombaController::class, 'showId'])->name('buatlomba.showId');
 
-//user
+//user // DONE
 Route::get('/users', [UserController::class, 'index']);
 Route::get('/users/{id}', [UserController::class, 'showId']);
 Route::delete('/users/destroy/{id}', [UserController::class, 'destroy']);
 
-// Route untuk menyimpan chat baru
+// Route untuk menyimpan chat baru(70%)
 Route::post('/chats', [ChatController::class, 'store']);
 Route::get('/chats/message', [ChatController::class, 'getMessage']);
 Route::delete('/chats/{id}', [ChatController::class, 'destroy']);
 
-//Email
-Route::post('/send-email', [EmailController::class, 'sendEmail']);
+//pemenang lomba 
+Route::post('/pemenang-lomba', [PemenangLomba::class, 'imageUpload']);
