@@ -87,10 +87,13 @@ Route::get('/users', [UserController::class, 'index']);
 Route::get('/users/{id}', [UserController::class, 'showId']);
 Route::delete('/users/destroy/{id}', [UserController::class, 'destroy']);
 
-// Route untuk menyimpan chat baru(70%)
-Route::post('/chats', [ChatController::class, 'store']);
-Route::get('/chats/message', [ChatController::class, 'getMessage']);
-Route::delete('/chats/{id}', [ChatController::class, 'destroy']);
+  // Route untuk menyimpan chat baru
+    Route::post('/chats', [ChatController::class, 'store']);
+    Route::get('/chats/message', [ChatController::class, 'getMessage']);
+    // Route untuk menghapus chat berdasarkan ID
+    Route::delete('/chats/{id}', [ChatController::class, 'delete']);
+
+
 
 //pemenang lomba 
-Route::post('/pemenang-lomba', [PemenangLomba::class, 'imageUpload']);
+Route::post('/pemenang-lomba', [PemenangLomba::class, 'emailUpload']);
