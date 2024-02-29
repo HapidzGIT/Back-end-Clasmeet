@@ -62,13 +62,14 @@ Route::group(['middleware' => 'auth:api'], function () {
 
 
 
-// Route untuk lomba
-Route::post('/lomba/create', [LombaController::class, 'create'])->name('lomba.create');
-Route::get('/lomba/show', [LombaController::class, 'show'])->name('lomba.show');
-Route::get('/lomba/{id}', [LombaController::class, 'showId'])->name('lomba.showId');
-Route::put('/lomba/update/{id}', [LombaController::class, 'update']);
-Route::delete('/lomba/destroy/{id}', [LombaController::class, 'destroy']);
-Route::get('/lomba/{nama_lomba}', [LombaController::class, 'showByNamaLomba']);
+    // Route untuk lomba
+    Route::post('/lomba/create', [LombaController::class, 'create'])->name('lomba.create');
+    Route::get('/lomba/show', [LombaController::class, 'showAll'])->name('lomba.show');
+    Route::get('/lomba/{id}', [LombaController::class, 'showId'])->name('lomba.showId');
+    Route::put('/lomba/update/{id}', [LombaController::class, 'update']);
+    Route::delete('/lomba/destroy/{id}', [LombaController::class, 'destroy']);
+    
+   
 
 // Route untuk jadwal90%
 Route::post('/jadwal/create', [JadwalController::class, 'create'])->name('lomba.create');
@@ -95,5 +96,7 @@ Route::delete('/users/destroy/{id}', [UserController::class, 'destroy']);
 
 
 
-//pemenang lomba 
-Route::post('/pemenang-lomba', [PemenangLomba::class, 'emailUpload']);
+    //pemenang lomba 
+    Route::post('/pemenang-lomba', [PemenangLomba::class, 'imageUpload']);
+
+    Route::get('/lomba', [LombaController::class, 'getNamaLomba']);

@@ -14,4 +14,8 @@ class buat_lomba extends Model
     'nama_pj',
     'kontak'
    ];
+
+   public function Lomba(){
+    return $this->hasMany(Lomba::class, 'buat_lomba_id');
+   }
 }

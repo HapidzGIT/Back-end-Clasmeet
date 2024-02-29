@@ -17,7 +17,7 @@ class Lomba extends Model
     ];
     public function buatLomba()
     {
-        return $this->belongsTo(buat_lomba::class);
+        return $this->belongsTo(buat_lomba::class, 'buat_lomba_id');
     }
 }
 
