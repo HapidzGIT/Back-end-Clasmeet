@@ -9,15 +9,15 @@ use App\Models\Lomba;
 class LombaController extends Controller
 {
     // Method untuk mendapatkan nama lomba
-    public function getNamaLomba()
-    {
-        // Ambil nama lomba terbaru dari tabel buat_lomba
-        $namaLomba = buat_lomba::latest()->value('nama_lomba');
+    // public function getNamaLomba()
+    // {
+    //     // Ambil nama lomba terbaru dari tabel buat_lomba
+    //     $namaLomba = buat_lomba::latest()->value('nama_lomba');
 
-        return response()->json([
-            'nama_lomba' => $namaLomba,
-        ]);
-    }
+    //     return response()->json([
+    //         'nama_lomba' => $namaLomba,
+    //     ]);
+    // }
 
     public function create(Request $request)
 {
@@ -38,19 +38,16 @@ class LombaController extends Controller
     // Simpan data Lomba
     $lomba->save();
 
-    $buatLombaId = $request->input('buat_lomba_id');
-    $namaLomba = Lomba::findOrFail($buatLombaId)->buatLomba->nama_lomba;
+    // Ambil nama_lomba dari tabel buat_lomba menggunakan relasi yang sudah didefinisikan di model Lomba
+    $namaLomba = buat_lomba::findOrFail($buatLombaId)->nama_lomba;
 
     // Susun respons JSON dengan bidang 'nama_lomba' di atas
     $responseData = [
         'data' => $lomba->toArray(), // Ubah objek ke array untuk mengambil data dari model
     ];
 
-    // Hapus 'nama_lomba' dari 'data'
-    unset($responseData['data']['nama_lomba']);
-
-    // Gabungkan 'nama_lomba' ke dalam array 'data' agar berada di atas
-    $responseData['data'] = array_merge(['nama_lomba' => $namaLomba], $responseData['data']);
+    // Tambahkan 'nama_lomba' ke dalam array 'data' agar berada di atas
+    $responseData['data']['nama_lomba'] = $namaLomba;
 
     return response()->json($responseData, 201);
 }
