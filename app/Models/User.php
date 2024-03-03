@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Profile;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,6 +11,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Database\Eloquent\Model;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -74,5 +76,11 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function profile()
+    {
+        // return $this->hasOne(Profile::class);
+        return $this->hasOne(Profile::class);
     }
 }

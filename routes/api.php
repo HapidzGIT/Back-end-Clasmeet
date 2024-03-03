@@ -11,7 +11,7 @@ use App\Http\Controllers\EmailController;
 use App\Http\Controllers\PemenangLomba;
 use App\Http\Middleware\isLogin;
 use App\Http\Middleware\CheckPermission;
-
+use App\Http\Controllers\ProfileController;
 
 
 
@@ -103,6 +103,11 @@ Route::put('/jadwal/update/{id}', [JadwalController::class, 'update']);
 Route::delete('/jadwal/destroy/{id}', [JadwalController::class, 'destroy']);
 
 
+//Profile
+Route::post('/profile/create',[ProfileController::class,'store']);
+Route::get('/profiles/{id}', [ProfileController::class,'show']);
+Route::put('/profiles/{id}', [ProfileController::class,'update']);
+
 
 //user
 
@@ -115,6 +120,5 @@ Route::delete('/chats/{id}', [ChatController::class, 'delete']);
 
 //pemenang lomba 
 Route::post('/pemenang-lomba', [PemenangLomba::class, 'imageUpload']);
-
 Route::get('/lomba', [LombaController::class, 'getNamaLomba']);
 
