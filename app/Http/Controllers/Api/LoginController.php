@@ -35,45 +35,40 @@ class LoginController extends Controller
 
         $user = auth()->user();
 
-        return $this->authenticated($request, $user, $token);
+      
+        $roles = $user->getRoleNames();
+        $permissions = $user->getAllPermissions()->pluck('name');
+
+        
+        return $this->authenticated($request, $user, $token, $roles, $permissions);
     }
 
-    protected function authenticated(Request $request, $user, $token)
+    /**
+     * Handle the authenticated user.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param mixed $user
+     * @param string $token
+     * @param array $roles
+     * @param \Illuminate\Support\Collection $permissions
+     * @return \Illuminate\Http\Response
+     */
+    protected function authenticated(Request $request, $user, $token, $roles, $permissions)
     {
         // Lakukan otentikasi pengguna
-            auth()->login($user);
-        
-            $response = [
-                'success' => true,
-                'data' => [
-                    'user' => [
-                        'id' => auth()->user()->id,
-                        'name' => auth()->user()->name,
-                        'email' => auth()->user()->email
-                    ],
-                    'token' => $token,
-                ],
-            ];
-        
-            // Periksa dan tambahkan roles ke array jika pengguna memiliki peran tertentu
-            if ($user->hasRole('admin')) {
-                $response['roles'][] = 'admin';
-               // Sinkronkan izin untuk pengguna
-                $user->syncPermissions(['users.index', 'users.create','users.edit','lomba.create','lomba.edit','lomba.delete']);
-                $response['permissions']['users.index'] = $user->hasPermissionTo('users.index');
-                $response['permissions']['users.create'] = $user->hasPermissionTo('users.create');
-                $response['permissions']['users.edit'] = $user->hasPermissionTo('users.edit');
-                $response['permissions']['lomba.create'] = $user->hasPermissionTo('lomba.create');
-                $response['permissions']['lomba.edit'] = $user->hasPermissionTo('lomba.edit');
-                $response['permissions']['lomba.delete'] = $user->hasPermissionTo('lomba.delete');
-                // $response['permissions']['users.delete'] = $user->hasPermissionTo('users.delete');
-            }
-        
-            if ($user->hasRole('user')) {
-                // Jika pengguna adalah user, tambahkan role user ke dalam respons
-                $response['roles'][] = 'user';
-            }
-        
-            return response()->json($response, 200);
-        }
+        auth()->login($user);
+
+        $response = [
+            'success' => true,
+        'id' => auth()->user()->id,
+        'name' => auth()->user()->name,
+        'email' => auth()->user()->email,
+        'roles' => $roles,
+        'permissions' => $permissions,
+        'token' => $token,
+            
+        ];
+
+        return response()->json($response, 200);
     }
+}

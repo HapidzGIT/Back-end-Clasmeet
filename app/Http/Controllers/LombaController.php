@@ -8,16 +8,16 @@ use App\Models\Lomba;
 
 class LombaController extends Controller
 {
-    // Method untuk mendapatkan nama lomba
-    // public function getNamaLomba()
-    // {
-    //     // Ambil nama lomba terbaru dari tabel buat_lomba
-    //     $namaLomba = buat_lomba::latest()->value('nama_lomba');
+    
+    public function getNamaLomba()
+    {
+        // Ambil nama lomba terbaru dari tabel buat_lomba
+        $namaLomba = buat_lomba::latest()->value('nama_lomba');
 
-    //     return response()->json([
-    //         'nama_lomba' => $namaLomba,
-    //     ]);
-    // }
+        return response()->json([
+            'nama_lomba' => $namaLomba,
+        ]);
+    }
 
     public function create(Request $request)
 {
@@ -93,7 +93,7 @@ class LombaController extends Controller
 
     public function showAll()
     {
-    // Temukan semua data lomba
+    // Temukan semua data lomba dengan relasi 'buatLomba'
     $lomba = Lomba::with('buatLomba')->get();
 
     // Jika tidak ada data lomba, kirim respons 404 Not Found
@@ -104,29 +104,32 @@ class LombaController extends Controller
     // Format data yang akan dikembalikan dalam respons
     $formattedData = [];
     foreach ($lomba as $item) {
-        $formattedData[] = [
-            'id' => $item->id,
-            'nama_lomba' => $item->buatLomba->nama_lomba,
-            'nama_kelas' => $item->nama_kelas,
-            'jumlah_pemain' => $item->jumlah_pemain,
-            'nama_peserta' => $item->nama_peserta,
-            'jurusan' => $item->jurusan,
-            'kontak' => $item->kontak,
-            'created_at' => $item->created_at,
-            'updated_at' => $item->updated_at,
-        ];
+        // Periksa apakah relasi buatLomba ada
+        if ($item->buatLomba) {
+            $formattedData[] = [
+                'id' => $item->id,
+                'nama_kelas' => $item->nama_kelas,
+                'jumlah_pemain' => $item->jumlah_pemain,
+                'nama_peserta' => $item->nama_peserta,
+                'jurusan' => $item->jurusan,
+                'kontak' => $item->kontak,
+                'nama_lomba' => $item->buatLomba->nama_lomba, // Menambahkan nama_lomba dari relasi
+                'created_at' => $item->created_at,
+                'updated_at' => $item->updated_at,
+            ];
+        }
     }
+
 
     // Kirim respons dengan data lomba yang telah diformat
     return response()->json($formattedData);
     }
 
 
-
     public function update(Request $request, $id)
     {
     $lomba = Lomba::findOrFail($id);
-    $lomba->nama_lomba = $request->input('nama_lomba');
+    // $lomba->nama_lomba = $request->input('nama_lomba');
     $lomba->nama_kelas = $request->input('nama_kelas');
     $lomba->jumlah_pemain = $request->input('jumlah_pemain');
     $lomba->nama_peserta = $request->input('nama_peserta');
@@ -148,7 +151,8 @@ class LombaController extends Controller
     $lomba->delete();
 
     return response()->json(['message' => 'Resource deleted successfully']);
-}
+    }
+
 }
 
 
