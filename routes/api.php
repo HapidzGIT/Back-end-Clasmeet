@@ -12,6 +12,9 @@ use App\Http\Controllers\PemenangLomba;
 use App\Http\Middleware\isLogin;
 use App\Http\Middleware\CheckPermission;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PemenangJadwal;
+
+
 
 
 
@@ -72,6 +75,8 @@ Route::group(['middleware' => 'auth:api'], function () {
 Route::get('/users', [UserController::class, 'index']);
 Route::get('/users/{id}', [UserController::class, 'showId']);
 Route::delete('/users/destroy/{id}', [UserController::class, 'destroy']);
+
+Route::post('/pemenangjadwal',[PemenangJadwal::class,'store']);
 
 // // Route untuk lomba
 // Route::post('/lomba/create', [LombaController::class, 'create'])->name('lomba.create');

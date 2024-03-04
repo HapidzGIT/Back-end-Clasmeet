@@ -18,7 +18,7 @@ class UserSeeder extends Seeder
         // Membuat user admin
         $admin = User::create([
             'name' => 'admin',
-            'email' => 'admin@contoh.com',
+            'email' => 'admin@gmail.com',
             'password' => bcrypt('password'),
         ]);
 
@@ -31,7 +31,7 @@ class UserSeeder extends Seeder
         // Membuat user biasa
         $user = User::create([
             'name' => 'user',
-            'email' => 'user@contoh.com',
+            'email' => 'user@gmail.com',
             'password' => bcrypt('password'),
         ]);
 
