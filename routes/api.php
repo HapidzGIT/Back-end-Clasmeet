@@ -108,9 +108,6 @@ Route::post('/profile/create',[ProfileController::class,'store']);
 Route::get('/profiles/{id}', [ProfileController::class,'show']);
 Route::put('/profiles/{id}', [ProfileController::class,'update']);
 
-
-//user
-
 // Route untuk menyimpan chat baru
 Route::post('/chats', [ChatController::class, 'store']);
 Route::get('/chats/message', [ChatController::class, 'getMessage']);

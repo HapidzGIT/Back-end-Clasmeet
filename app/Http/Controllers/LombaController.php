@@ -13,7 +13,7 @@ class LombaController extends Controller
     {
         // Ambil nama lomba terbaru dari tabel buat_lomba
         $namaLomba = buat_lomba::latest()->value('nama_lomba');
-
+        
         return response()->json([
             'nama_lomba' => $namaLomba,
         ]);
