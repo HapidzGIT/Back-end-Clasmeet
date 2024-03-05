@@ -13,12 +13,7 @@ use App\Http\Middleware\isLogin;
 use App\Http\Middleware\CheckPermission;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PemenangJadwal;
-
-
-
-
-
-
+use App\Http\Controllers\RiwayatDaftarController;
 
 /*
 |--------------------------------------------------------------------------
@@ -119,8 +114,10 @@ Route::get('/chats/message', [ChatController::class, 'getMessage']);
 // Route untuk menghapus chat berdasarkan ID
 Route::delete('/chats/{id}', [ChatController::class, 'delete']);
 
+//Riiwayat 
+Route::get('/riwayat-daftar', [RiwayatDaftarController::class, 'index']);
 
 //pemenang lomba 
-Route::post('/pemenang-lomba', [PemenangLomba::class, 'imageUpload']);
+Route::post('/pemenang-lomba', [PemenangLomba::class, 'emailUpload']);
 Route::get('/lomba', [LombaController::class, 'getNamaLomba']);
 
