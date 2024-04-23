@@ -33,7 +33,7 @@ class BuatLombaController extends Controller
 
     public function show()
     {
-        $buatLomba = buat_lomba::paginate(5); // Menggunakan paginate untuk membagi data ke dalam beberapa halaman
+        $buatLomba = buat_lomba::paginate(3); // Menggunakan paginate untuk membagi data ke dalam beberapa halaman
 
         return response()->json($buatLomba);
     }

@@ -23,11 +23,11 @@ class ProfileController extends Controller
                 'user_id' => 'required|exists:users,id',
                 'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Max 2MB
             ]);
-    
+
             // Create a new profile
             $profile = new Profile();
             $profile->user_id = $validatedData['user_id'];
-    
+
             // Handle image upload
             if ($request->hasFile('image')) {
                 $image = $request->file('image');
@@ -35,13 +35,13 @@ class ProfileController extends Controller
                 $image->move(public_path('images/profiles'), $imageName);
                 $profile->image = 'images/profiles/' . $imageName;
             }
-    
+
             // Save the profile
             $profile->save();
-    
+
             // Get the user associated with the profile
             $user = User::findOrFail($profile->user_id);
-    
+
             // Return a success response with profile data
             return response()->json([
                 'message' => 'Profil berhasil dibuat.',
@@ -132,6 +132,6 @@ public function update(Request $request, $id)
        ], Response::HTTP_INTERNAL_SERVER_ERROR);
    }
 }
-    
+
 
 }

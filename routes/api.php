@@ -70,7 +70,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 });
 
 // Route::middleware(['auth:api', 'role:admin'])->group(function () {
-    
+
 // });
 
 Route::get('/users', [UserController::class, 'index']);
@@ -78,8 +78,9 @@ Route::get('/users/{id}', [UserController::class, 'showId']);
 Route::delete('/users/destroy/{id}', [UserController::class, 'destroy']);
 
 // Route::post('/pemenangjadwal',[PemenangJadwal::class,'store']);
-Route::post('/pemenangsjadwal',[PemenangsController::class,'create']);
-
+Route::post('/pemenangsjadwal', [PemenangsController::class, 'create']);
+Route::get('pemenangs/{id}', [\App\Http\Controllers\PemenangsController::class, 'getKelasPemenang']);
+Route::get('pemenangs', [\App\Http\Controllers\PemenangsController::class, 'getAllJLomba']);
 // // Route untuk lomba
 // Route::post('/lomba/create', [LombaController::class, 'create'])->name('lomba.create');
 // Route::get('/lomba/show', [LombaController::class, 'showAll'])->name('lomba.show');
@@ -111,9 +112,9 @@ Route::delete('/jadwal/destroy/{id}', [JadwalController::class, 'destroy']);
 
 
 //Profile
-Route::post('/profile/create',[ProfileController::class,'store']);
-Route::get('/profiles/{id}', [ProfileController::class,'show']);
-Route::put('/profiles/{id}', [ProfileController::class,'update']);
+Route::post('/profile/create', [ProfileController::class, 'store']);
+Route::get('/profiles/{id}', [ProfileController::class, 'show']);
+Route::put('/profiles/{id}', [ProfileController::class, 'update']);
 
 // Route untuk menyimpan chat baru
 Route::post('/chats', [ChatController::class, 'store']);
@@ -121,10 +122,9 @@ Route::get('/chats/message', [ChatController::class, 'getMessage']);
 // Route untuk menghapus chat berdasarkan ID
 Route::delete('/chats/{id}', [ChatController::class, 'delete']);
 
-//Riiwayat 
+//Riiwayat
 // Route::get('/riwayat-daftar', [RiwayatDaftarController::class, 'index']);
 
-//pemenang lomba 
+//pemenang lomba
 Route::post('/pemenang-lomba', [PemenangLomba::class, 'emailUpload']);
 Route::get('/lomba', [LombaController::class, 'getNamaLomba']);
-

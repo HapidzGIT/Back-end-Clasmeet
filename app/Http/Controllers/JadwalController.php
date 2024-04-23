@@ -17,15 +17,13 @@ class JadwalController extends Controller
         $jadwal->tempat = $request->input('tempat');
         $jadwal->waktu = $request->input('waktu'); // Isi nilai 'waktu'
         $jadwal->keterangan = $request->input('keterangan');
-      
-    
         $jadwal->save();
         return response()->json($jadwal);
     }
 
     public function show()
     {
-        $jadwal = Jadwal::paginate(5); 
+        $jadwal = Jadwal::paginate(5);
         return response()->json($jadwal);
     }
 
@@ -44,7 +42,7 @@ class JadwalController extends Controller
     $jadwal->waktu = $request->input('waktu');
     $jadwal->tempat = $request->input('tempat');
     $jadwal->keterangan = $request->input('keterangan');
-  
+
 
     $jadwal->save();
     return response()->json($jadwal);

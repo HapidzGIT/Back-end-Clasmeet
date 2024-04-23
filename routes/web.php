@@ -20,6 +20,6 @@ Route::get('/', function () {
 });
 
 
-Route::get('admin',function(){
+Route::get('/admin',function(){
 return "<h1>admin</h1>";
 })->middleware(['auth','verified','role|admin']);

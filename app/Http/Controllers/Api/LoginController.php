@@ -19,7 +19,7 @@ class LoginController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
-                'message' => 'Validasi gagal',
+                'message' => 'Password harus diisi dengan benar',
                 'errors' => $validator->errors()
             ], 422);
         }
@@ -35,11 +35,11 @@ class LoginController extends Controller
 
         $user = auth()->user();
 
-      
+
         $roles = $user->getRoleNames();
         $permissions = $user->getAllPermissions()->pluck('name');
 
-        
+
         return $this->authenticated($request, $user, $token, $roles, $permissions);
     }
 
@@ -60,13 +60,13 @@ class LoginController extends Controller
 
         $response = [
             'success' => true,
-        'id' => auth()->user()->id,
-        'name' => auth()->user()->name,
-        'email' => auth()->user()->email,
-        'roles' => $roles,
-        'permissions' => $permissions,
-        'token' => $token,
-            
+            'id' => auth()->user()->id,
+            'name' => auth()->user()->name,
+            'email' => auth()->user()->email,
+            'roles' => $roles,
+            'permissions' => $permissions,
+            'token' => $token,
+
         ];
 
         return response()->json($response, 200);

@@ -8,12 +8,12 @@ use App\Models\Lomba;
 
 class LombaController extends Controller
 {
-    
+
     public function getNamaLomba()
     {
         // Ambil nama lomba terbaru dari tabel buat_lomba
         $namaLomba = buat_lomba::latest()->value('nama_lomba');
-        
+
         return response()->json([
             'nama_lomba' => $namaLomba,
         ]);
@@ -51,23 +51,24 @@ class LombaController extends Controller
 
     return response()->json($responseData, 201);
 }
-    
-    
 
-    
+
+
+
 
 
     public function show()
     {
-        $lomba = Lomba::paginate(5); 
+        $lomba = Lomba::paginate(5);
         return response()->json($lomba);
     }
 
     public function showId($id)
     {
+        $lomba = Lomba::find($id);
+        return response()->json($lomba);
         // Temukan data lomba berdasarkan ID
         $lomba = Lomba::with('buatLomba')->find($id);
-
         // Jika data tidak ditemukan, kirim respons 404 Not Found
         if (!$lomba) {
             return response()->json(['message' => 'Data Lomba tidak ditemukan'], 404);
@@ -89,7 +90,7 @@ class LombaController extends Controller
         // Kirim respons dengan data lomba yang telah diformat
         return response()->json($formattedData);
     }
-    
+
 
     public function showAll()
     {

@@ -37,18 +37,38 @@ class PemenangsController extends Controller
             'kelas_pemenang' => $request->kelas_pemenang
         ], 201);
     }
-    public function getJadwalLomba($id)
+    public function getKelasPemenang($id)
     {
         $pemenang = Pemenangs::findOrFail($id);
         $jadwalLomba = $pemenang->jadwalLomba;
-
-        return response()->json($jadwalLomba, 200);
+    
+        return response()->json([
+            'nama_lomba' => $jadwalLomba->nama_lomba,
+            'tanggal' => $jadwalLomba->tanggal,
+            'waktu' => $jadwalLomba->waktu,
+            'kelas' => $jadwalLomba->kelas,
+            'tempat' => $jadwalLomba->tempat,
+            'kelas_pemenang' => $pemenang->kelas_pemenang
+        ], 200);
     }
-
-    public function getAllJadwalLomba()
+    public function getAllJLomba()
     {
-        $jadwalLomba = Jadwal::all();
-
-        return response()->json($jadwalLomba, 200);
+        $pemenangs = Pemenangs::all();
+        $data = [];
+    
+        foreach ($pemenangs as $pemenang) {
+            $jadwalLomba = $pemenang->jadwalLomba;
+    
+            $data[] = [
+                'nama_lomba' => $jadwalLomba->nama_lomba,
+                'tanggal' => $jadwalLomba->tanggal,
+                'waktu' => $jadwalLomba->waktu,
+                // 'kelas' => $jadwalLomba->kelas,
+                'tempat' => $jadwalLomba->tempat,
+                'kelas_pemenang' => $pemenang->kelas_pemenang
+            ];
+        }
+    
+        return response()->json($data, 200);
     }
 }

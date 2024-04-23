@@ -8,7 +8,7 @@ class LombaTable extends Migration
 {
     public function up(): void
     {
-        if (!Schema::hasTable('lomba')) {
+        if (Schema::hasTable('lomba')) {
             Schema::create('lomba', function (Blueprint $table) {
                 $table->id();
                 $table->unsignedBigInteger('buat_lomba_id');
