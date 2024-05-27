@@ -14,6 +14,7 @@ use App\Http\Middleware\CheckPermission;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PemenangJadwal;
 use App\Http\Controllers\PemenangsController;
+use App\Http\Controllers\RiwayatController;
 
 
 
@@ -120,10 +121,11 @@ Route::get('/chats/message', [ChatController::class, 'getMessage']);
 // Route untuk menghapus chat berdasarkan ID
 Route::delete('/chats/{id}', [ChatController::class, 'delete']);
 
-//Riiwayat
-// Route::get('/riwayat-daftar', [RiwayatDaftarController::class, 'index']);
+
 //pemenang lomba
-Route::post('/pemenang-lomba', [PemenangLomba::class, 'emailUpload']);
+Route::post('/pemenang-lomba', [PemenangLomba::class, 'imageUpload']);
 Route::get('/lomba', [LombaController::class, 'getNamaLomba']);
 
 
+//
+Route::post('/riwayat', [RiwayatController::class, 'index']);

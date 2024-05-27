@@ -25,8 +25,8 @@ class LombaController extends Controller
 
         $lomba = new Lomba();
 
-        // Mendapatkan ID lomba yang baru saja dibuat
-        $buatLombaId = $request->input('buat_lomba_id');
+    // Mendapatkan ID lomba yang baru saja dibuat
+    $buatLombaId = $request->input('buat_lomba_id');
 
         $lomba->user_id = auth()->user()->id; // Tambahkan user_id dari pengguna yang sedang login
         $lomba->nama_kelas = $request->input('nama_kelas');
@@ -42,13 +42,13 @@ class LombaController extends Controller
         // Ambil nama_lomba dari tabel buat_lomba menggunakan relasi yang sudah didefinisikan di model Lomba
         $namaLomba = buat_lomba::findOrFail($buatLombaId)->nama_lomba;
 
-        // Susun respons JSON dengan bidang 'nama_lomba' di atas
-        $responseData = [
-            'data' => $lomba->toArray(), // Ubah objek ke array untuk mengambil data dari model
-        ];
+    // Susun respons JSON dengan bidang 'nama_lomba' di atas
+    $responseData = [
+        'data' => $lomba->toArray(), // Ubah objek ke array untuk mengambil data dari model
+    ];
 
-        // Tambahkan 'nama_lomba' ke dalam array 'data' agar berada di atas
-        $responseData['data']['nama_lomba'] = $namaLomba;
+    // Tambahkan 'nama_lomba' ke dalam array 'data' agar berada di atas
+    $responseData['data']['nama_lomba'] = $namaLomba;
 
         return response()->json($responseData, 201);
     }
@@ -94,43 +94,36 @@ class LombaController extends Controller
 
     public function showAll(Request $request)
     {
-        // Jumlah item per halaman
-        $perPage = $request->get('per_page',   4);
 
-        // Temukan semua data lomba dengan relasi 'buatLomba' dan paginate
-        $lomba = Lomba::with('buatLomba')->paginate($perPage);
+    $lomba = Lomba::with('buatLomba')->get();
 
-        // Jika tidak ada data lomba, kirim respons 404 Not Found
-        if ($lomba->isEmpty()) {
-            return response()->json(['message' => 'Tidak ada data Lomba yang tersedia'], 404);
+    // Jika tidak ada data lomba, kirim respons 404 Not Found
+    if ($lomba->isEmpty()) {
+        return response()->json(['message' => 'Tidak ada data Lomba yang tersedia'], 404);
+    }
+
+    // Format data yang akan dikembalikan dalam respons
+    $formattedData = [];
+    foreach ($lomba as $item) {
+        // Periksa apakah relasi buatLomba ada
+        if ($item->buatLomba) {
+            $formattedData[] = [
+                'id' => $item->id,
+                'nama_kelas' => $item->nama_kelas,
+                'jumlah_pemain' => $item->jumlah_pemain,
+                'nama_peserta' => $item->nama_peserta,
+                'jurusan' => $item->jurusan,
+                'kontak' => $item->kontak,
+                'nama_lomba' => $item->buatLomba->nama_lomba, // Menambahkan nama_lomba dari relasi
+                'created_at' => $item->created_at,
+                'updated_at' => $item->updated_at,
+            ];
         }
+    }
 
-        // Format data yang akan dikembalikan dalam respons
-        $formattedData = $lomba->getCollection()->transform(function ($item) {
-            // Periksa apakah relasi buatLomba ada
-            if ($item->buatLomba) {
-                return [
-                    'id' => $item->id,
-                    'nama_kelas' => $item->nama_kelas,
-                    'jumlah_pemain' => $item->jumlah_pemain,
-                    'nama_peserta' => $item->nama_peserta,
-                    'jurusan' => $item->jurusan,
-                    'kontak' => $item->kontak,
-                    'nama_lomba' => $item->buatLomba->nama_lomba, // Menambahkan nama_lomba dari relasi
-                    'created_at' => $item->created_at,
-                    'updated_at' => $item->updated_at,
-                ];
-            }
-        })->filter()->all();
 
-        // Kirim respons dengan data lomba yang telah diformat beserta informasi pagination
-        return response()->json([
-            'current_page' => $lomba->currentPage(),
-            'last_page' => $lomba->lastPage(),
-            'per_page' => $lomba->perPage(),
-            'total' => $lomba->total(),
-            'data' => $formattedData,
-        ]);
+    // Kirim respons dengan data lomba yang telah diformat
+    return response()->json($formattedData);
     }
 
     public function update(Request $request, $id)
