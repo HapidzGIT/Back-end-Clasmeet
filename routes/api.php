@@ -81,21 +81,19 @@ Route::delete('/users/destroy/{id}', [UserController::class, 'destroy']);
 Route::post('/pemenangsjadwal', [PemenangsController::class, 'create']);
 Route::get('pemenangs/{id}', [\App\Http\Controllers\PemenangsController::class, 'getKelasPemenang']);
 Route::get('pemenangs', [\App\Http\Controllers\PemenangsController::class, 'getAllJLomba']);
-// // Route untuk lomba
-// Route::post('/lomba/create', [LombaController::class, 'create'])->name('lomba.create');
-// Route::get('/lomba/show', [LombaController::class, 'showAll'])->name('lomba.show');
-// Route::get('/lomba/{id}', [LombaController::class, 'showId'])->name('lomba.showId');
-// Route::put('/lomba/update/{id}', [LombaController::class, 'update']);
-// Route::delete('/lomba/destroy/{id}', [LombaController::class, 'destroy']);
 
 
 
 // Route untuk lomba
+
 Route::post('/lomba/create', [LombaController::class, 'create'])->name('lomba.create');
-Route::get('/lomba/show', [LombaController::class, 'showAll'])->name('lomba.show');
+Route::get('/lomba/show', [LombaController::class, 'showAll'])->name('lomba.showAll');
 Route::get('/lomba/{id}', [LombaController::class, 'showId'])->name('lomba.showId');
-Route::put('/lomba/update/{id}', [LombaController::class, 'update']);
-Route::delete('/lomba/destroy/{id}', [LombaController::class, 'destroy']);
+Route::put('/lomba/update/{id}', [LombaController::class, 'update'])->name('lomba.update');
+Route::delete('/lomba/destroy/{id}', [LombaController::class, 'destroy'])->name('lomba.destroy');
+Route::get('/user/{userId}/lomba-history', [LombaController::class, 'showUserHistory']);
+
+
 
 // Route untuk buat lomba
 Route::post('/buat-lomba', [BuatLombaController::class, 'imageUpload']);
@@ -124,7 +122,8 @@ Route::delete('/chats/{id}', [ChatController::class, 'delete']);
 
 //Riiwayat
 // Route::get('/riwayat-daftar', [RiwayatDaftarController::class, 'index']);
-
 //pemenang lomba
 Route::post('/pemenang-lomba', [PemenangLomba::class, 'emailUpload']);
 Route::get('/lomba', [LombaController::class, 'getNamaLomba']);
+
+
