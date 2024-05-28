@@ -128,4 +128,3 @@ Route::get('/lomba', [LombaController::class, 'getNamaLomba']);
 
 
 //
-Route::post('/riwayat', [RiwayatController::class, 'index']);

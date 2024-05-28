@@ -16,16 +16,16 @@ class PemenangsController extends Controller
             'kelas_pemenang' => 'required|string',
             'jadwal_lomba_id' => 'required|exists:jadwal_lomba,id'
         ]);
-    
+
         // Membuat data pemenang
         $pemenang = Pemenangs::create([
             'kelas_pemenang' => $request->kelas_pemenang,
             'jadwal_lomba_id' => $request->jadwal_lomba_id
         ]);
-    
+
         // Mengambil data lomba berdasarkan jadwal_lomba_id
         $jadwalLomba = Jadwal::findOrFail($request->jadwal_lomba_id);
-    
+
         // Mengembalikan respons JSON dengan data yang diminta
         return response()->json([
             'nama_lomba' => $jadwalLomba->nama_lomba,
@@ -41,7 +41,7 @@ class PemenangsController extends Controller
     {
         $pemenang = Pemenangs::findOrFail($id);
         $jadwalLomba = $pemenang->jadwalLomba;
-    
+
         return response()->json([
             'nama_lomba' => $jadwalLomba->nama_lomba,
             'tanggal' => $jadwalLomba->tanggal,
@@ -55,10 +55,10 @@ class PemenangsController extends Controller
     {
         $pemenangs = Pemenangs::all();
         $data = [];
-    
+
         foreach ($pemenangs as $pemenang) {
             $jadwalLomba = $pemenang->jadwalLomba;
-    
+
             $data[] = [
                 'nama_lomba' => $jadwalLomba->nama_lomba,
                 'tanggal' => $jadwalLomba->tanggal,
@@ -68,7 +68,7 @@ class PemenangsController extends Controller
                 'kelas_pemenang' => $pemenang->kelas_pemenang
             ];
         }
-    
+
         return response()->json($data, 200);
     }
 }
