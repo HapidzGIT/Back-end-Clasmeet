@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('pemenang', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('lomba_id'); // Menambah kolom untuk menyimpan ID lomba
-            $table->foreign('lomba_id')->references('id')->on('lomba'); // Menetapkan kunci asing ke tabel lomba
+            $table->foreign('lomba_id')->references('id')->on('lomba')->onDelete('cascade'); // Menetapkan kunci asing ke tabel lomba
             $table->string('kelas_pemenang'); // Hanya mengizinkan input kelas_pemenang
             // Jika Anda memerlukan kolom tambahan, tambahkan di sini
             $table->timestamps();
         });
     }
-    
+
 
     /**
      * Reverse the migrations.

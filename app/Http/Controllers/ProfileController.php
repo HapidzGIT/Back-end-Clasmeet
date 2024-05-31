@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Http\Response;
 use App\Models\Profile;
+use Illuminate\Support\Facades\Log;
 
 class ProfileController extends Controller
 {
@@ -60,78 +61,81 @@ class ProfileController extends Controller
     }
 
     /**
- * Display the specified resource.
- *
- * @param  int  $id
- * @return \Illuminate\Http\Response
- */
-public function show($id)
-{
-    try {
-        // Find the profile by ID
-        $profile = Profile::findOrFail($id);
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        try {
+            Log::info("Mencoba mengambil profil dengan ID: $id");
 
-        // Get the user associated with the profile
-        $user = User::findOrFail($profile->user_id);
+            // Find the profile by ID
+            $profile = Profile::findOrFail($id);
 
-        // Return user data with profile image
-        return response()->json([
-            'name' => $user->name,
-            'email' => $user->email,
-            'image' => $profile->image,
-        ], Response::HTTP_OK);
-    } catch (\Exception $e) {
-        // Return an error response if profile not found or other error occurs
-        return response()->json([
-            'message' => 'Terjadi kesalahan saat mengambil profil.',
-            'error' => $e->getMessage()
-        ], Response::HTTP_INTERNAL_SERVER_ERROR);
+            // Get the user associated with the profile
+            $user = User::findOrFail($profile->user_id);
+
+            Log::info("Profil dan pengguna ditemukan, ID pengguna: {$user->id}");
+
+            // Return user data with profile image
+            return response()->json([
+                'name' => $user->name,
+                'user_id' => $user->user_id,
+                'email' => $user->email,
+                'image' => $profile->image,
+            ], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            Log::error("Kesalahan saat mengambil profil: " . $e->getMessage());
+            // Return an error response if profile not found or other error occurs
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat mengambil profil.',
+                'error' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
-}
 
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        try {
+            // Find the profile by ID
+            $profile = Profile::findOrFail($id);
 
-/**
-* Update the specified resource in storage.
-*
-* @param  \Illuminate\Http\Request  $request
-* @param  int  $id
-* @return \Illuminate\Http\Response
-*/
-public function update(Request $request, $id)
-{
-   try {
-       // Find the profile by ID
-       $profile = Profile::findOrFail($id);
+            // Validate the request data
+            $validatedData = $request->validate([
+                'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Max 2MB
+            ]);
 
-       // Validate the request data
-       $validatedData = $request->validate([
-           'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Max 2MB
-       ]);
+            // Handle image upload
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('images/profiles'), $imageName);
+                $profile->image = 'images/profiles/' . $imageName;
+            }
 
-       // Handle image upload
-       if ($request->hasFile('image')) {
-           $image = $request->file('image');
-           $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-           $image->move(public_path('images/profiles'), $imageName);
-           $profile->image = 'images/profiles/' . $imageName;
-       }
+            // Save the profile
+            $profile->save();
 
-       // Save the profile
-       $profile->save();
-
-       // Return a success response with updated profile data
-       return response()->json([
-           'message' => 'Gambar profil berhasil diperbarui.',
-           'image' => $profile->image,
-       ], Response::HTTP_OK);
-   } catch (\Exception $e) {
-       // Return an error response
-       return response()->json([
-           'message' => 'Terjadi kesalahan saat memperbarui gambar profil.',
-           'error' => $e->getMessage()
-       ], Response::HTTP_INTERNAL_SERVER_ERROR);
-   }
-}
-
-
+            // Return a success response with updated profile data
+            return response()->json([
+                'message' => 'Gambar profil berhasil diperbarui.',
+                'image' => $profile->image,
+            ], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            // Return an error response
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat memperbarui gambar profil.',
+                'error' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

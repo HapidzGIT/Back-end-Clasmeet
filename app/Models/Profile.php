@@ -14,13 +14,8 @@ class Profile extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        'user_id', 'image',
-    ];
+    protected $fillable = ['user_id', 'image'];
 
-    /**
-     * Get the user that owns the profile.
-     */
     public function user()
     {
         return $this->belongsTo(User::class);

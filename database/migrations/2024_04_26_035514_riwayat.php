@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        
-            Schema::create('chat', function (Blueprint $table) {
+        if (!Schema::hasTable('riwayat')) {
+            Schema::create('riwayat', function (Blueprint $table) {
                 $table->id();
-                $table->unsignedBigInteger('user_id');
-                $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-                $table->text('message');
+                $table->unsignedBigInteger('nama_kelas_id');
+                $table->foreign('nama_kelas_id')->references('id')->on('lomba')->onDelete('cascade');
                 $table->timestamps();
             });
-        
+        }
     }
 
     /**
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('chat');
+        //
     }
 };

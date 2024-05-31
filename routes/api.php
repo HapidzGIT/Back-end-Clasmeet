@@ -86,6 +86,7 @@ Route::get('pemenangs', [\App\Http\Controllers\PemenangsController::class, 'getA
 
 
 // Route untuk lomba
+Route::get('/lomba/show', [LombaController::class, 'showAll'])->name('lomba.show');
 
 Route::post('/lomba/create', [LombaController::class, 'create'])->name('lomba.create');
 Route::get('/lomba/show', [LombaController::class, 'showAll'])->name('lomba.showAll');
@@ -97,9 +98,16 @@ Route::get('/user/{userId}/lomba-history', [LombaController::class, 'showUserHis
 
 
 // Route untuk buat lomba
-Route::post('/buat-lomba', [BuatLombaController::class, 'imageUpload']);
+// Route::post('/buat-lomba', [BuatLombaController::class, 'imageUpload']);
 Route::get('/buat-lomba/show', [BuatLombaController::class, 'show'])->name('buatlomba.show');
 Route::get('/buat-lomba/{id}', [BuatLombaController::class, 'showId'])->name('buatlomba.showId');
+Route::get('/nama/{userId}', [LombaController::class, 'getNamaLomba']);
+Route::get('/lomba/nama/{userId}', [LombaController::class, 'getNamaLomba']);
+Route::post('/buat-lomba', [BuatLombaController::class, 'imageUpload']);
+Route::middleware('auth')->group(function () {
+        Route::post('/lomba/create', [LombaController::class, 'create'])->name('lomba.create');
+        Route::get('/get-by-user', [LombaController::class, 'getLombaByUser']);
+    });
 
 
 // Route untuk jadwal

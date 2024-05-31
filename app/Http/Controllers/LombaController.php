@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\buat_lomba;
 use Illuminate\Http\Request;
 use App\Models\Lomba;
+use Illuminate\Support\Facades\Auth;
 
 class LombaController extends Controller
 {
@@ -20,50 +21,50 @@ class LombaController extends Controller
     }
 
   // LombaController.php
+  public function create(Request $request)
+  {
+      // Validasi input
+      $request->validate([
+          'nama_peserta' => 'required|string',
+          'nama_kelas' => 'required|string',
+          'jumlah_pemain' => 'required|integer',
+          'jurusan' => 'required|string',
+          'kontak' => 'required|string',
+          'nama_lomba' => 'required|string',
+          'buat_lomba_id' => 'required|exists:buat_lomba,id',
+      ]);
 
-public function create(Request $request)
-{
-    // Validasi input
-    $request->validate([
-        'nama_peserta' => 'required|string',
-        'nama_kelas' => 'required|string',
-        'jumlah_pemain' => 'required|integer',
-        'jurusan' => 'required|string',
-        'kontak' => 'required|string',
-        'nama_lomba' => 'required|string',
-        'buat_lomba_id' => 'required|exists:buat_lomba,id',
-    ]);
+      // Periksa apakah user sudah login
+      if (!auth()->check()) {
+          return response()->json(['message' => 'Unauthorized'], 401);
+      }
 
-    // Periksa apakah user sudah login
-    if (!auth()->check()) {
-        return response()->json(['message' => 'Unauthorized'], 401);
-    }
+      $lomba = new Lomba();
+      $lomba->user_id = auth()->user()->id; // Tambahkan user_id dari pengguna yang sedang login
+      $lomba->nama_kelas = $request->input('nama_kelas');
+      $lomba->jumlah_pemain = $request->input('jumlah_pemain');
+      $lomba->nama_peserta = $request->input('nama_peserta');
+      $lomba->jurusan = $request->input('jurusan');
+      $lomba->kontak = $request->input('kontak');
+      $lomba->buat_lomba_id = $request->input('buat_lomba_id');
 
-    $lomba = new Lomba();
-    // $lomba->user_id = auth()->user()->id; // Tambahkan user_id dari pengguna yang sedang login
-    $lomba->nama_kelas = $request->input('nama_kelas');
-    $lomba->jumlah_pemain = $request->input('jumlah_pemain');
-    $lomba->nama_peserta = $request->input('nama_peserta');
-    $lomba->jurusan = $request->input('jurusan');
-    $lomba->kontak = $request->input('kontak');
-    $lomba->buat_lomba_id = $request->input('buat_lomba_id');
+      // Simpan data Lomba
+      $lomba->save();
 
-    // Simpan data Lomba
-    $lomba->save();
+      // Ambil nama_lomba dari tabel buat_lomba menggunakan relasi yang sudah didefinisikan di model Lomba
+      $namaLomba = buat_lomba::findOrFail($lomba->buat_lomba_id)->nama_lomba;
 
-    // Ambil nama_lomba dari tabel buat_lomba menggunakan relasi yang sudah didefinisikan di model Lomba
-    $namaLomba = buat_lomba::findOrFail($lomba->buat_lomba_id)->nama_lomba;
+      // Susun respons JSON dengan bidang 'nama_lomba' di atas
+      $responseData = [
+          'data' => $lomba->toArray(), // Ubah objek ke array untuk mengambil data dari model
+      ];
 
-    // Susun respons JSON dengan bidang 'nama_lomba' di atas
-    $responseData = [
-        'data' => $lomba->toArray(), // Ubah objek ke array untuk mengambil data dari model
-    ];
+      // Tambahkan 'nama_lomba' ke dalam array 'data' agar berada di atas
+      $responseData['data']['nama_lomba'] = $namaLomba;
 
-    // Tambahkan 'nama_lomba' ke dalam array 'data' agar berada di atas
-    $responseData['data']['nama_lomba'] = $namaLomba;
+      return response()->json($responseData, 201);
+  }
 
-    return response()->json($responseData, 201);
-}
 
     public function show()
     {
@@ -168,7 +169,7 @@ public function create(Request $request)
     // Jika tidak ada data lomba, kirim respons 404 Not Found
     if ($lomba->isEmpty()) {
         return response()->json(['message' => 'Tidak ada data Lomba yang tersedia'], 404);
-    }   
+    }
 
     // Format data yang akan dikembalikan dalam respons
     $formattedData = [];
@@ -191,24 +192,35 @@ public function create(Request $request)
 
     return response()->json($formattedData);
 }
+public function getLombaByUser()
+{
+    if (!Auth::check()) {
+        return response()->json(['message' => 'User not authenticated'], 401);
+    }
 
+    $userId = Auth::id();
+    $userName = Auth::user()->name;
+    $lomba = Lomba::with('buatLomba')->where('user_id', $userId)->get();
+
+    if ($lomba->isEmpty()) {
+        return response()->json(['message' => 'Tidak ada lomba yang terdaftar untuk pengguna ini'], 404);
+    }
+
+    $responseData = [];
+    foreach ($lomba as $item) {
+        if ($item->buatLomba) {
+            $responseData[] = [
+                'id' => $item->id,
+                'nama_lomba' => $item->buatLomba->nama_lomba,
+                'nama_kelas' => $item->nama_kelas,
+                'jumlah_pemain' => $item->jumlah_pemain,
+                'nama_peserta' => $item->nama_peserta,
+                'jurusan' => $item->jurusan,
+                'message' => "Kamu, $userName, telah terdaftar di lomba " . $item->buatLomba->nama_lomba,
+            ];
+        }
+    }
+
+    return response()->json($responseData);
 }
-
-
-
-// public function update(Request $request, Lomba $lomba)
-// {
-//     $request->validate([
-//         'nama_lomba' => 'required',
-//         'nama_kelas' => 'required',
-//         'jumlah_pemain' => 'required|integer',
-//         'nama_peserta' => 'required',
-//         'jurusan' => 'required',
-//         'kontak' => 'required',
-//     ]);
-
-//     $lomba->update($request->all());
-
-//     return redirect()->route('lomba.index')
-//         ->with('success', 'Data Lomba berhasil diperbarui');
-// }
+}
