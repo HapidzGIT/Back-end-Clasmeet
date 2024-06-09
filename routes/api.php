@@ -1,4 +1,4 @@
-<?php
+    <?php
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -131,8 +131,9 @@ Route::delete('/chats/{id}', [ChatController::class, 'delete']);
 
 
 //pemenang lomba
-Route::post('/pemenang-lomba', [PemenangLomba::class, 'imageUpload']);
+Route::post('/pemenang-lomba', [PemenangLomba::class, 'emailUpload']);
 Route::get('/lomba', [LombaController::class, 'getNamaLomba']);
+Route::get('/pemenangUser', [PemenangLomba::class, 'getWinnerUser']);
 
 
 //
