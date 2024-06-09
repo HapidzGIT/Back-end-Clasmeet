@@ -133,7 +133,7 @@ Route::delete('/chats/{id}', [ChatController::class, 'delete']);
 //pemenang lomba
 Route::post('/pemenang-lomba', [PemenangLomba::class, 'emailUpload']);
 Route::get('/lomba', [LombaController::class, 'getNamaLomba']);
-Route::get('/pemenangUser', [PemenangLomba::class, 'getWinnerUser']);
+// Route::get('/pemenangUser', [PemenangLomba::class, 'getWinnerUser']);
 
 
 //

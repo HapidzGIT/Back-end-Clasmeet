@@ -9,7 +9,6 @@ class pemenang_lomba extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
         'nama_lomba',
         'keterangan',
         'nama_kelas',
