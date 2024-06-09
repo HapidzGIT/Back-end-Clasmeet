@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('pemenangs', function (Blueprint $table) {
             $table->id();
-            $table->string('kelas_pemenang'); 
+            $table->string('kelas_pemenang');
             $table->unsignedBigInteger('jadwal_lomba_id'); // tambahkan kolom foreign key
             $table->foreign('jadwal_lomba_id')->references('id')->on('jadwal_lomba')->onDelete('cascade'); // definisikan foreign key constraint
             $table->timestamps();
@@ -28,3 +28,5 @@ return new class extends Migration
         Schema::dropIfExists('pemenangs');
     }
 };
+
+//hsdgshd

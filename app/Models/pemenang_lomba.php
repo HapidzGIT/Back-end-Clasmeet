@@ -1,23 +1,18 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+//hdgsh
 class pemenang_lomba extends Model
 {
-    use HasFactory;
-
+    protected $table = 'pemenang_lomba';
     protected $fillable = [
-        'nama_lomba',
-        'keterangan',
-        'nama_kelas',
-        'image',
+     'nama_lomba',
+     'image',
+     'keterangan',
+     'nama_kelas'
     ];
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 }
-

@@ -18,5 +18,5 @@ class Pemenang extends Model
         return $this->belongsTo(Lomba::class);
     }
 
-    
+
 }

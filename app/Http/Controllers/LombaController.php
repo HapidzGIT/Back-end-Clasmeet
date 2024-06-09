@@ -216,7 +216,7 @@ public function getLombaByUser()
                 'jumlah_pemain' => $item->jumlah_pemain,
                 'nama_peserta' => $item->nama_peserta,
                 'jurusan' => $item->jurusan,
-                'message' => "Kamu, $userName, telah terdaftar di lomba " . $item->buatLomba->nama_lomba,
+                'message' => "Kamu, telah terdaftar di lomba " . $item->buatLomba->nama_lomba,
             ];
         }
     }
